@@ -68,72 +68,82 @@ class Example():
         self._time = value
 
     def initialize(self):
-        self.renderer = Renderer([0.2, 0.2, 0.2])
+        self.renderer = Renderer()
         self.scene = Scene()
         self.camera = Camera(aspect_ratio=800/600)
-        self.rig = MovementRig()
+        self.rig = MovementRig(units_per_second=5)
         self.rig.add(self.camera)
-        self.rig.set_position([0, 2, 5])
+        self.rig.set_position([0, 2, 15])
 
-        ambient_light = AmbientLight(color=[0.2, 0.2, 0.2])
+        ambient_light = AmbientLight(color=[0.05, 0.05, 0.05])
         self.scene.add(ambient_light)
 
-        self.directional_light = DirectionalLight(color=[0.5, 0.5, 0.5], direction=[-1, -1, 0])
-        self.directional_light.set_position([2, 4, 0])
+        self.directional_light = DirectionalLight(color=[0.9, 0.9, 0.9], direction=[-1, 0, 0])
+        self.directional_light.set_position([10, 0, 0])
         self.scene.add(self.directional_light)
-        
+
         direct_helper = DirectionalLightHelper(self.directional_light)
         self.directional_light.add(direct_helper)
 
         sky_geometry = SphereGeometry(radius=50)
-        sky_material = TextureMaterial(texture=Texture(file_name="images/sky.jpg"))
+        sky_material = TextureMaterial(texture=Texture(file_name="images/space.jpg"))
         sky = Mesh(sky_geometry, sky_material)
         self.scene.add(sky)
 
-        sphere_geometry = SphereGeometry()
-        phong_material_brickwall_shadow = PhongMaterial(
-            texture=Texture("images/brick-wall.jpg"),
+        Geometry_earth = SphereGeometry(radius=1.0)
+        Geometry_sun = SphereGeometry(radius=3.5)
+        Geometry_moon = SphereGeometry(radius=0.5)
+
+        phong_material_earth = PhongMaterial(
+            texture=Texture("images/earth.jpeg"),
+            number_of_light_sources=2,
+            use_shadow=True
+        )
+        
+        phong_material_sun = TextureMaterial(
+            texture=Texture("images/sun.jpeg")
+        )
+
+        phong_material_moon = PhongMaterial(
+            texture=Texture("images/moon.png"),
             number_of_light_sources=2,
             use_shadow=True
         )
 
-        box_geometry = BoxGeometry()
-        phong_material_crate_shadown = PhongMaterial(
-            texture=Texture("images/crate.jpg"),
-            number_of_light_sources=2,
-            use_shadow=True
-        )
+        earth = Mesh(Geometry_earth, phong_material_earth)
+        earth.set_position([0, 0, 0])
+        self.scene.add(earth)
 
-        phong_material_grass_shadown = PhongMaterial(
-            texture=Texture("images/grass.jpg"),
-            number_of_light_sources=2,
-            use_shadow=True
-        )
-        sphere1 = Mesh(sphere_geometry, phong_material_brickwall_shadow)
-        sphere1.set_position([-2, 1.2, 0])
-        self.scene.add(sphere1)
+        sun = Mesh(Geometry_sun, phong_material_sun)
+        sun.set_position([20, 0, 0])
+        self.scene.add(sun)
 
-        sphere2 = Mesh(sphere_geometry, phong_material_brickwall_shadow)
-        sphere2.set_position([1, 2.2, -0.5])
-        self.scene.add(sphere2)
+        moon = Mesh(Geometry_moon, phong_material_moon)
+        moon.set_position([-5, 0, 0])
+        self.scene.add(moon)
 
-        box = Mesh(box_geometry, phong_material_crate_shadown)
-        box.set_position([0, 0.5, 0])
-        self.scene.add(box)
-
+        self.sun = sun
+        self.earth = earth
+        self.moon = moon
+        
         self.renderer.enable_shadows(self.directional_light)
-
-        floor = Mesh(RectangleGeometry(width=20, height=20), phong_material_grass_shadown)
-        floor.rotate_x(-math.pi / 2)
-        self.scene.add(floor)
 
     def update(self):
         #"""
-        # view dynamic shadows -- need to increase shadow camera range
-        self.directional_light.rotate_y(0.01337, False)
+        self.sun.rotate_y(0.00005, True)
+
+        self.directional_light.rotate_y(0.0005, False)
+        self.sun.rotate_y(0.0005, False)
+
+        self.earth.rotate_y(0.01, True)
+        self.moon.rotate_y(0.005, True)
+
+        self.moon.rotate_y(0.005, False)
         #"""
-        self.rig.update( self.input, self.delta_time)
+        self.rig.update(self.input, self.delta_time)
+
         self.renderer.render(self.scene, self.camera)
+
     def run(self):
         # Startup #
         self.initialize()
