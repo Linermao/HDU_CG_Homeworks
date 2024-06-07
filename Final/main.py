@@ -82,8 +82,8 @@ class Example():
         self.directional_light.set_position([10, 0, 0])
         self.scene.add(self.directional_light)
 
-        direct_helper = DirectionalLightHelper(self.directional_light)
-        self.directional_light.add(direct_helper)
+        # direct_helper = DirectionalLightHelper(self.directional_light)
+        # self.directional_light.add(direct_helper)
 
         sky_geometry = SphereGeometry(radius=50)
         sky_material = TextureMaterial(texture=Texture(file_name="images/space.jpg"))
