@@ -1,22 +1,20 @@
-#!/usr/bin/python3
 import math
 import pygame
 import sys
 
-from scripts.renderer import Renderer
+from scripts.render.renderer import Renderer
 from scripts.scene import Scene
-from scripts.camera import Camera
-from scripts.mesh import Mesh
-from scripts.texture import Texture
+from scripts.camera.camera import Camera
+from scripts.core.mesh import Mesh
+from scripts.material.texture import Texture
 
-from scripts.core.light import AmbientLight, DirectionalLight, PointLight
+from scripts.light.light import AmbientLight, DirectionalLight, PointLight
 from scripts.material.phong import PhongMaterial
-from scripts.material.texture import TextureMaterial
+from scripts.material.texture_material import TextureMaterial
 
 from scripts.geometry.geometry import BoxGeometry, RectangleGeometry, SphereGeometry
 
-from scripts.extras.movement_rig import MovementRig
-from scripts.extras.directional_light import DirectionalLightHelper
+from scripts.camera.movement_rig import MovementRig
 
 from scripts.core.input import Input
 from scripts.core.utils import Utils
@@ -170,4 +168,3 @@ class Example():
 
 if __name__ == "__main__":
     Example(screen_size=[800, 600]).run()
-

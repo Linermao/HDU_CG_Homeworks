@@ -1,7 +1,7 @@
 import OpenGL.GL as GL
 
-from scripts.camera import Camera
-from scripts.core_ext.render_target import RenderTarget
+from scripts.camera.camera import Camera
+from scripts.render.render_target import RenderTarget
 from scripts.material.depth import DepthMaterial
 
 

@@ -1,9 +1,9 @@
 import OpenGL.GL as GL
 import pygame
 
-from scripts.mesh import Mesh
-from scripts.core.light import Light
-from scripts.core.shadow import Shadow
+from scripts.core.mesh import Mesh
+from scripts.light.light import Light
+from scripts.render.shadow import Shadow
 
 
 class Renderer:

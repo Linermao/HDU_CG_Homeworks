@@ -1,7 +1,7 @@
 import OpenGL.GL as GL
 import pygame
 
-from scripts.texture import Texture
+from scripts.material.texture import Texture
 
 
 class RenderTarget:
