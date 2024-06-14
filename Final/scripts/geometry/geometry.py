@@ -366,7 +366,7 @@ class SphereGeometry(EllipsoidGeometry):
 
 
 class OBJGeometry(Geometry):
-    def __init__(self):
+    def __init__(self, size=1.0):
         super().__init__()
         model = pywavefront.Wavefront('./model/satellite_obj.obj', create_materials=True, collect_faces=True)
         vertices = model.vertices
@@ -394,9 +394,13 @@ class OBJGeometry(Geometry):
                 material_data.append(color)
 
         if not normal_data:
-            normal_data = [[0, 0, 0]] * len(position_data)
+            normal_data = [[0.5, 0.5, 0.5]] * len(position_data)
         if not uv_data:
-            uv_data = [[0, 0]] * len(position_data)
+            uv_data = [[0.5, 0.5]] * len(position_data)
+
+        position_data_p = np.array(position_data)
+        position_data_p *= size
+        position_data = position_data_p.tolist()
 
         self.add_attribute("vec3", "vertexPosition", position_data)
         self.add_attribute("vec3", "vertexNormal", normal_data)

@@ -89,10 +89,10 @@ class Example():
         self.scene.add(sky)
 
         Geometry_earth = SphereGeometry(radius=1.0)
-        Geometry_airplane = OBJGeometry()
-        Geometry_sun = SphereGeometry()
+        Geometry_sun = SphereGeometry(radius=3)
         Geometry_moon = SphereGeometry(radius=0.5)
-
+        Geometry_airplane = OBJGeometry(size=0.05)
+       
         phong_material_earth = PhongMaterial(
             texture=Texture("images/earth.jpeg"),
             number_of_light_sources=2,
@@ -103,12 +103,14 @@ class Example():
             texture=Texture("images/sun.jpeg")
         )
 
-        phong_material_airplane = TextureMaterial(
-            texture=Texture("images/metal.png")
-        )
-
         phong_material_moon = PhongMaterial(
             texture=Texture("images/moon.png"),
+            number_of_light_sources=2,
+            use_shadow=True
+        )
+        
+        phong_material_airplane = PhongMaterial(
+            texture=Texture("images/metal.png"),
             number_of_light_sources=2,
             use_shadow=True
         )
@@ -116,12 +118,6 @@ class Example():
         earth = Mesh(Geometry_earth, phong_material_earth)
         earth.set_position([0, 0, 0])
         self.scene.add(earth)
-        
-        '''
-        airplane = Mesh(Geometry_airplane, phong_material_airplane)
-        airplane.set_position([20, 5, 0])
-        self.scene.add(airplane)
-        '''
 
         sun = Mesh(Geometry_sun, phong_material_sun)
         sun.set_position([20, 0, 0])
@@ -131,9 +127,29 @@ class Example():
         moon.set_position([-5, 0, 0])
         self.scene.add(moon)
 
+        airplane = Mesh(Geometry_airplane, phong_material_airplane)
+        airplane.set_position([0, 2, 0])
+        airplane.rotate_x(90)
+        self.scene.add(airplane)
+
+        '''
+        Geometry_box = BoxGeometry()
+
+        phong_material_box = PhongMaterial(
+            texture=Texture("images/crate.jpg"),
+            number_of_light_sources=2,
+            use_shadow=True
+        )
+
+        box = Mesh(Geometry_box, phong_material_box)
+        box.set_position([0, 5, 0])
+        self.scene.add(box)
+        '''
+
         self.sun = sun
         self.earth = earth
         self.moon = moon
+        self.airplane = airplane
         
         self.renderer.enable_shadows(self.directional_light)
 
@@ -146,8 +162,8 @@ class Example():
 
         self.earth.rotate_y(0.01, True)
         self.moon.rotate_y(0.005, True)
-
         self.moon.rotate_y(0.005, False)
+        self.airplane.rotate_z(0.005, True)
         #"""
         self.rig.update(self.input, self.delta_time)
 
