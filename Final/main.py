@@ -91,7 +91,7 @@ class Example():
         Geometry_earth = SphereGeometry(radius=1.0)
         Geometry_sun = SphereGeometry(radius=3)
         Geometry_moon = SphereGeometry(radius=0.5)
-        Geometry_airplane = OBJGeometry(size=0.05)
+        Geometry_airplane = OBJGeometry(size=0.1)
        
         phong_material_earth = PhongMaterial(
             texture=Texture("images/earth.jpeg"),
@@ -128,7 +128,7 @@ class Example():
         self.scene.add(moon)
 
         airplane = Mesh(Geometry_airplane, phong_material_airplane)
-        airplane.set_position([0, 2, 0])
+        airplane.set_position([0, 3, 0])
         airplane.rotate_x(90)
         self.scene.add(airplane)
 
