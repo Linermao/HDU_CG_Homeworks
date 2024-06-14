@@ -12,7 +12,7 @@ from scripts.light.light import AmbientLight, DirectionalLight, PointLight
 from scripts.material.phong import PhongMaterial
 from scripts.material.texture_material import TextureMaterial
 
-from scripts.geometry.geometry import BoxGeometry, RectangleGeometry, SphereGeometry
+from scripts.geometry.geometry import BoxGeometry, RectangleGeometry, SphereGeometry, OBJGeometry
 
 from scripts.camera.movement_rig import MovementRig
 
@@ -89,7 +89,8 @@ class Example():
         self.scene.add(sky)
 
         Geometry_earth = SphereGeometry(radius=1.0)
-        Geometry_sun = SphereGeometry(radius=3.5)
+        Geometry_airplane = OBJGeometry()
+        Geometry_sun = SphereGeometry()
         Geometry_moon = SphereGeometry(radius=0.5)
 
         phong_material_earth = PhongMaterial(
@@ -102,6 +103,10 @@ class Example():
             texture=Texture("images/sun.jpeg")
         )
 
+        phong_material_airplane = TextureMaterial(
+            texture=Texture("images/metal.png")
+        )
+
         phong_material_moon = PhongMaterial(
             texture=Texture("images/moon.png"),
             number_of_light_sources=2,
@@ -111,6 +116,12 @@ class Example():
         earth = Mesh(Geometry_earth, phong_material_earth)
         earth.set_position([0, 0, 0])
         self.scene.add(earth)
+        
+        '''
+        airplane = Mesh(Geometry_airplane, phong_material_airplane)
+        airplane.set_position([20, 5, 0])
+        self.scene.add(airplane)
+        '''
 
         sun = Mesh(Geometry_sun, phong_material_sun)
         sun.set_position([20, 0, 0])

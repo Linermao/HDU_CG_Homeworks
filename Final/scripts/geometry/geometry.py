@@ -2,7 +2,7 @@ import OpenGL.GL as GL
 import numpy as np
 import math
 from scripts.core.matrix import Matrix
-
+import pywavefront
 
 
 class Attribute:
@@ -363,3 +363,42 @@ class EllipsoidGeometry(ParametricGeometry):
 class SphereGeometry(EllipsoidGeometry):
     def __init__(self, radius=1, theta_segments=16, phi_segments=32):
         super().__init__(2*radius, 2*radius, 2*radius, theta_segments, phi_segments)
+
+
+class OBJGeometry(Geometry):
+    def __init__(self):
+        super().__init__()
+        model = pywavefront.Wavefront('./model/satellite_obj.obj', create_materials=True, collect_faces=True)
+        vertices = model.vertices
+        faces = []
+        for mesh in model.mesh_list:
+            faces.extend(mesh.faces)
+
+        position_data = []
+        normal_data = []
+        uv_data = []
+        material_data = []
+
+        for face in faces:
+            for vertex_index in face:
+                vertex = vertices[vertex_index]
+                position_data.append(vertex[:3])
+                if len(vertex) >= 6:
+                    normal_data.append(vertex[3:6])
+                if len(vertex) == 8:
+                    uv_data.append(vertex[6:8])
+                
+                # Assuming one material per face (basic handling)
+                material = model.mesh_list[0].materials[0]
+                color = material.diffuse if material and hasattr(material, 'diffuse') else [1, 1, 1]
+                material_data.append(color)
+
+        if not normal_data:
+            normal_data = [[0, 0, 0]] * len(position_data)
+        if not uv_data:
+            uv_data = [[0, 0]] * len(position_data)
+
+        self.add_attribute("vec3", "vertexPosition", position_data)
+        self.add_attribute("vec3", "vertexNormal", normal_data)
+        self.add_attribute("vec2", "vertexUV", uv_data)
+        self.add_attribute("vec3", "vertexColor", material_data)
