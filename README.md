@@ -50,3 +50,9 @@ Link: [https://github.com/ax-va/PyOpenGL-Pygame-Stemkoski-Pascale-2021](https://
 Superb programer! Many interesting examples!
 
 ![Final](images/Final.png)
+
+#### 4.1 newest
+
+Use pywavefront, loading obj models.
+
+![Final2](images/Final2.png)
